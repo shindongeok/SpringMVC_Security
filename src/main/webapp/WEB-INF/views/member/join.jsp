@@ -80,7 +80,7 @@ pageEncoding="UTF-8"%>
 
                    <tr>
                       <td placeholder="비밀번호 입력해라">비밀번호</td>
-                      <td><input type="password" class="form-control" name="memberPw1" id="memberPw1" onkeyup="pwCheck()"/>
+                      <td><input type="password" class="form-control" name="memberPw1" id="memberPw1" onkeyup="pwCheck()" />
                           <div id="passCheck" style="color: red"></div>
                       </td>
                    </tr>

@@ -23,7 +23,12 @@
     </update>
 
 <!--    프로필 업데이트-->
-    <update id="proUpdate" parameterType="kr.bit.entity.Member">
+
+    <select id="getMember" resultType="kr.bit.entity.Member">
+        select *from member_table where memberID=#{memberID}
+    </select>
+
+    <update id="memberProfile" parameterType="kr.bit.entity.Member">
         update member_table set memberProfile = #{memberProfile} where memberID = #{memberID}
     </update>
 

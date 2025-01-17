@@ -31,9 +31,26 @@
                 <li class="dropdown">
                   <a class="dropdown-toggle" data-toggle="dropdown" href="#">접속<span class="caret"></span></a>
                     <ul class="dropdown-menu">
+                <c:if test="${!empty memberVo}">
                        <li><a href="${root}/memberUpdateForm"><span class="glyphicon glyphicon-user"></span>정보수정</a></li>
                        <li><a href="${root}/memberImageForm"><span class="glyphicon glyphicon-paperclip"></span>사진등록</a></li>
                        <li><a href="${root}/memberLogout"><span class="glyphicon glyphicon-log-out"></span>로그아웃</a></li>
+
+                    <c:if test="${!empty memberVo}">
+                        <%--memberVo.memberProfile값이     공백이면--%>
+                        <c:if test="${memberVo.memberProfile eq ''}">
+                            <img src="${root}/resources/image/cat.jpg" style="width: 50px; height: 50px;"/>
+                        </c:if>
+                        <%----%>
+                        <c:if test="${memberVo.memberProfile ne ''}">
+                            <img src="${root}/resources/upload/${memberVo.memberProfile}" style="width: 50px; height: 50px;"/>
+                        </c:if>
+                        ${memberVo.memberName} 님 환영합니다.
+                    </c:if>
+
+
+                </c:if>
+
                    </ul>
                 </li>
             </ul>

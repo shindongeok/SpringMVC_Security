@@ -14,6 +14,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.io.File;
+import java.io.IOException;
 
 @Controller
 public class MemberController {
@@ -163,24 +165,66 @@ public class MemberController {
     }
 
     @PostMapping("/memberImage")
-    public String memberImage(RedirectAttributes rttr, HttpServletRequest request, HttpSession session){
+    public String memberImage(RedirectAttributes rttr, HttpServletRequest request, HttpSession session) throws IOException {
 
         //MultipartRequest -> 업로드된 파일 처리하는 객체
-        MultipartRequest multipartRequest=null;
-        int fileMaxSize =40*1024*1024;   //업로드할 파일 최대크기
+        MultipartRequest multipartRequest = null;
+        int fileMaxSize = 40 * 1024 * 1024;   //업로드할 파일 최대크기
 
-        String savefolder = request.getRealPath("resources/upload");    //파일이 저장될 경로 설정
+        String savePath = request.getRealPath("resources/upload");    //파일이 저장될 경로 설정
 
-        try {
-            //new DefaultFileRenamePolicy() -> 동일한 파일명이 있으면 바꿔주겠다.
-            multipartRequest=new MultipartRequest(request, savefolder, fileMaxSize, "UTF-8", new DefaultFileRenamePolicy());
-        }catch (Exception e){
-            rttr.addFlashAttribute("messageType", "실패");
-            rttr.addFlashAttribute("message", "이미지 업로드를 실패했습니다.");
-            return "redirect:/memberImageForm";
+
+        //new DefaultFileRenamePolicy() -> 동일한 파일명이 있으면 바꿔주겠다.
+        multipartRequest = new MultipartRequest(request, savePath, fileMaxSize, "UTF-8", new DefaultFileRenamePolicy());
+
+        String memeberID = multipartRequest.getParameter("memberID");
+        String newProfile = "";
+
+
+        File file = multipartRequest.getFile("memberProfile");
+        if (file != null) {   //업로드 되어 있는 상태라면
+            String str = file.getName().substring(file.getName().lastIndexOf(".") + 1);
+            str = str.toUpperCase();  //JPG
+
+            if (str.equals("PNG") || str.equals("JPG")) {
+                String oldProfile = memberMapper.getMember(memeberID).getMemberProfile();
+                File oldFile = new File(savePath + "/" + oldProfile);
+
+                if (oldFile.exists()) {
+                    oldFile.delete();   //기존 이미지가 있따면 해당 이미지 파일을 삭제한다.
+                }
+                newProfile = file.getName();    //업로드 된 새 파일명을 newProfile에 저장함
+            } else {
+                if (file.exists()) {
+                    file.delete();
+                }
+                rttr.addFlashAttribute("messageType", "실패");
+                rttr.addFlashAttribute("message", "업로드할 수 없습니다.");
+
+
+                return "redirect:/memberImageForm";
+            }
         }
-        return "";
+
+        //새로운 사진 테이블에 저장
+        Member memberVo = new Member();
+        memberVo.setMemberID(memeberID);
+        memberVo.setMemberProfile(newProfile);
+
+        memberMapper.memberProfile(memberVo);
+        Member member = memberMapper.getMember(memeberID);
+
+        session.setAttribute("memberVo", member);
+
+        rttr.addFlashAttribute("messageType", "성공");
+        rttr.addFlashAttribute("message", "업로드 성공");
+
+        return "redirect:/";
     }
+
+
+
+
 
 
 }

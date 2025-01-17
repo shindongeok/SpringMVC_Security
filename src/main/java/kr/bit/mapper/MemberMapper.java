@@ -12,5 +12,6 @@ public interface MemberMapper {
     public void memberImage(Member memberProfile);
 
 //    프로필업데이트
-    public void proUpdate(Member member);
+    public Member getMember(String memberID);
+    public void memberProfile(Member member);
 }

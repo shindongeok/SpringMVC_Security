@@ -23,6 +23,10 @@
 <body>
     <div class="container">
         <jsp:include page="always/header.jsp" />
+        <c:if test="${empty memberVo}">
+            Spring
+        </c:if>
+
         <c:if test="${!empty memberVo}">
             <%--memberVo.memberProfile값이     공백이면--%>
             <c:if test="${memberVo.memberProfile eq ''}">
@@ -30,14 +34,11 @@
             </c:if>
             <%----%>
             <c:if test="${memberVo.memberProfile ne ''}">
-                <img src="${root}/resources/upload/${memberVo.memberProfile}"/>
+                <img src="${root}/resources/upload/${memberVo.memberProfile}" style="width: 50px; height: 50px;"/>
             </c:if>
             ${memberVo.memberName} 님 환영합니다.
         </c:if>
         <div class="panel panel-default">
-            <div>
-                <img src="${root}/resources/image/apple-inc.jpg" style="width:100%;"/>
-            </div>
             <div class="panel-body">
                 <!-- Navigation Tabs -->
                 <ul class="nav nav-tabs">
@@ -54,6 +55,9 @@
                     <div id="tab2" class="tab-pane fade">
                         <h3>Tab 2</h3>
                         <p>This is the content of Tab 2.</p>
+                    </div>
+                    <div>
+                        <img src="${root}/resources/image/apple-inc.jpg" style="width:100%;"/>
                     </div>
                 </div>
             </div>
