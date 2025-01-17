@@ -59,16 +59,29 @@ pageEncoding="UTF-8"%>
                     listHtml+="</tr>";
 
                 } );
-                listHtml+="<tr>";
-                listHtml+="<td colspan='5'>";
-                listHtml+="<button class='btn btn-primary btn-sm' onclick='goForm()'>글쓰기</button>";
-                listHtml+="</td>";
-                listHtml+="</tr>";
-                listHtml+="</table>";
-                $("#view").html(listHtml);
 
-                $("#view").css("display","block");
-                $("#wfrom").css("display","none");
+
+                if(${!empty memberVo}) {
+                    listHtml += "<tr>";
+                    listHtml += "<td>";
+                    listHtml += "</td>";
+                    listHtml += "<td>";
+                    listHtml += "</td>";
+                    listHtml += "<td>";
+                    listHtml += "</td>";
+                    listHtml += "<td>";
+                    listHtml += "</td>";
+                    listHtml += "<td colspan='5' >";
+                    listHtml += "<button class='btn btn-primary btn-sm' onclick='goForm()'>글쓰기</button>";
+                    listHtml += "</td>";
+                    listHtml += "</tr>";
+                }
+                    listHtml += "</table>";
+                    $("#view").html(listHtml);
+
+                    $("#view").css("display", "block");
+                    $("#wfrom").css("display", "none");
+
              }
 
              function goList(){
@@ -186,6 +199,7 @@ pageEncoding="UTF-8"%>
             <div class="panel-body" id="view">Panel Content</div>
             <div class="panel-body" id="wfrom" style="display: none">
              <form id="frm">
+                    <input type="hidden" name="memberID" value="${memberVo.memberID}">
               <table class="table">
                  <tr>
                    <td>제목</td>
@@ -197,7 +211,7 @@ pageEncoding="UTF-8"%>
                  </tr>
                  <tr>
                    <td>작성자</td>
-                   <td><input type="text" id="writer" name="writer" class="form-control"/></td>
+                   <td><input type="text" id="writer" name="writer" value="${memberVo.memberName}" readonly="readonly" class="form-control"/></td>
                  </tr>
                  <tr>
                    <td colspan="2" align="center">
@@ -210,5 +224,7 @@ pageEncoding="UTF-8"%>
              </form>
             </div>
             <div class="panel-footer">비트캠프</div>
+        </div>
+   </div>
 </body>
 </html>

@@ -7,8 +7,8 @@
     </select>
 
     <insert id="boardInsert" parameterType="kr.bit.entity.Board">
-        insert into bitboard(title,content,writer)
-        values(#{title},#{content},#{writer})
+        insert into bitboard(memberID,title,content,writer)
+        values(#{memberID},#{title},#{content},#{writer})
     </insert>
 
     <delete id="boardDelete" parameterType="int">

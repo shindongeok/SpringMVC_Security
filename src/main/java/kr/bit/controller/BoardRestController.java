@@ -3,7 +3,6 @@ package kr.bit.controller;
 
 import kr.bit.entity.Board;
 import kr.bit.mapper.BoardMapper;
-import org.apache.ibatis.annotations.Update;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
