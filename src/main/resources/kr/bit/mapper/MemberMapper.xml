@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="kr.bit.mapper.MemberMapper">
+    <select id="memberDoubleCheck" resultType="kr.bit.entity.Member">
+        select *from member_table where memberID=#{memberID}
+    </select>
+
+
+    <insert id="register" parameterType="kr.bit.entity.Member">
+        insert into member_table(memberID, memberPw,memberName, memberAge, memberGender,
+        memberEmail ,memberProfile) values(#{memberID}, #{memberPw}, #{memberName}, #{memberAge}, #{memberGender}, #{memberEmail}, #{memberProfile})
+    </insert>
+
+    <select id="login" resultType="kr.bit.entity.Member" parameterType="kr.bit.entity.Member">
+        select * from member_table where memberID=#{memberID} and memberPw=#{memberPw}
+    </select>
+
+    <update id="update" parameterType="kr.bit.entity.Member">
+        update member_table set memberPw = #{memberPw}, memberName = #{memberName},
+        memberAge = #{memberAge},memberGender = #{memberGender}, memberEmail=#{memberEmail}
+        where memberID = #{memberID}
+    </update>
+
+<!--    프로필 업데이트-->
+    <update id="proUpdate" parameterType="kr.bit.entity.Member">
+        update member_table set memberProfile = #{memberProfile} where memberID = #{memberID}
+    </update>
+
+</mapper>
+
