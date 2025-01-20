@@ -40,6 +40,11 @@
                                 <c:if test="${memberVo.memberProfile ne ''}">
                                     <img src="${root}/resources/upload/${memberVo.memberProfile}" style="width: 50px; height: 50px;"/>
                                 </c:if>
+                                <c:forEach var="authVo" items="${memberVo.authList}">
+                                    <c:if test="${authVo.auth eq 'ROLE_USER'}">일반회원</c:if>
+                                    <c:if test="${authVo.auth eq 'ROLE_VIP'}">VIP</c:if>
+                                    <c:if test="${authVo.auth eq 'ROLE_ADMIN'}">관리자</c:if>
+                                </c:forEach>
                                 ${memberVo.memberName} 님 환영합니다.
                             </c:if>
 

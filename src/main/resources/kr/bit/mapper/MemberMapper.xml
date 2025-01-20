@@ -3,11 +3,29 @@
 
 <mapper namespace="kr.bit.mapper.MemberMapper">
 
+    <resultMap id="memberMap" type="kr.bit.entity.Member">
+        <id property="memberIdx" column="memberIdx"/>
+        <result property="memberID" column="memberID"/>
+        <result property="memberPw" column="memberPw"/>
+        <result property="memberName" column="memberName"/>
+        <result property="memberAge" column="memberAge"/>
+        <result property="memberGender" column="memberGender"/>
+        <result property="memberEmail" column="memberEmail"/>
+        <result property="memberProfile" column="memberProfile"/>
+        <collection property="authList" resultMap="authMap"/>
+
+    </resultMap>
+
+    <resultMap id="authMap" type="kr.bit.entity.MemberAuth">
+        <id property="no" column="no"/>
+        <result property="memberID" column="memberID"/>
+        <result property="auth" column="auth"/>
+    </resultMap>
 
 
 
     <select id="memberDoubleCheck" resultType="kr.bit.entity.Member">
-        select *from member_table where memberID=#{memberID}
+        select *from mem_table where memberID=#{memberID}
     </select>
 
 
@@ -32,7 +50,7 @@
     </update>
 
 <!--    프로필 업데이트-->
-    <select id="getMember" resultType="kr.bit.entity.Member">
+    <select id="getMember" resultMap="memberMap">
         select *from mem_table mem
         left outer join member_auth auth
         on
@@ -48,6 +66,8 @@
     <insert id="authRegister" parameterType="kr.bit.entity.MemberAuth">
         INSERT INTO member_auth(memberID, auth) values(#{memberID}, #{auth})
     </insert>
+
+
 
 
 

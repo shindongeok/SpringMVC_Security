@@ -89,6 +89,7 @@ public class MemberController {
                     memberAuthVo.setMemberID(member.getMemberID());
                     memberAuthVo.setAuth(memberAuth.getAuth());
                     memberMapper.authRegister(memberAuthVo); //권한 추가하는 메소드 디비에 memberMapper.
+
                 }
             }
 
@@ -97,6 +98,7 @@ public class MemberController {
             //회원가입 되면 로그인처리할거임
 
             Member memberVo = memberMapper.getMember(member.getMemberID());
+            System.out.println(memberVo);
             session.setAttribute("memberVo", memberVo);
             return "redirect:/";
         } else {
@@ -130,12 +132,16 @@ public class MemberController {
 
         Member memberVo = memberMapper.login(member);
 
+
+        //passwordEncoder.matches(member.getMemberPw(), memberVo.getMemberPw()) 함수로 해쉬화? 해주는 작업이 가능한다
+        // 클라이언트가 입력한 값과 디비에 저장된 값 (비번) 을 해쉬화로해서 비교함.
         if (memberVo != null && passwordEncoder.matches(member.getMemberPw(), memberVo.getMemberPw())) {  // 로그인 성공했을 때
             // 비밀번호 매칭 확인
             if (passwordEncoder.matches(member.getMemberPw(), memberVo.getMemberPw())) {
                 rttr.addFlashAttribute("messageType", "성공");
                 rttr.addFlashAttribute("message", "로그인 되었다");
                 session.setAttribute("memberVo", memberVo);
+                System.out.println(memberVo);
                 return "redirect:/";
             } else {
                 rttr.addFlashAttribute("messageType", "실패");

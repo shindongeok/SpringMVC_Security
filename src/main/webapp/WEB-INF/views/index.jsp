@@ -23,21 +23,21 @@
 <body>
     <div class="container">
         <jsp:include page="always/header.jsp" />
-        <c:if test="${empty memberVo}">
-            Spring
-        </c:if>
+<%--        <c:if test="${empty memberVo}">--%>
+<%--            Spring--%>
+<%--        </c:if>--%>
 
-        <c:if test="${!empty memberVo}">
-            <%--memberVo.memberProfile값이     공백이면--%>
-            <c:if test="${memberVo.memberProfile eq ''}">
-                <img src="${root}/resources/image/cat.jpg" style="width: 50px; height: 50px;"/>
-            </c:if>
-            <%----%>
-            <c:if test="${memberVo.memberProfile ne ''}">
-                <img src="${root}/resources/upload/${memberVo.memberProfile}" style="width: 50px; height: 50px;"/>
-            </c:if>
-            ${memberVo.memberName} 님 환영합니다.
-        </c:if>
+<%--        <c:if test="${!empty memberVo}">--%>
+<%--            &lt;%&ndash;memberVo.memberProfile값이     공백이면&ndash;%&gt;--%>
+<%--            <c:if test="${memberVo.memberProfile eq ''}">--%>
+<%--                <img src="${root}/resources/image/cat.jpg" style="width: 50px; height: 50px;"/>--%>
+<%--            </c:if>--%>
+<%--            &lt;%&ndash;&ndash;%&gt;--%>
+<%--            <c:if test="${memberVo.memberProfile ne ''}">--%>
+<%--                <img src="${root}/resources/upload/${memberVo.memberProfile}" style="width: 50px; height: 50px;"/>--%>
+<%--            </c:if>--%>
+<%--            ${memberVo.memberName} 님 환영합니다.--%>
+<%--        </c:if>--%>
         <div class="panel panel-default">
             <div class="panel-body">
                 <!-- Navigation Tabs -->
@@ -49,13 +49,13 @@
                 <!-- Tab Content -->
                 <div class="tab-content">
                     <div id="tab1" class="tab-pane fade in active">
-                        <h3>메인</h3>
-                        <p>메인입니다.</p>
+<%--                        <h3>메인</h3>--%>
+                        <p></p>
                     </div>
-                    <div id="tab2" class="tab-pane fade">
-                        <h3>Tab 2</h3>
-                        <p>This is the content of Tab 2.</p>
-                    </div>
+<%--                    <div id="tab2" class="tab-pane fade">--%>
+<%--                        <h3>Tab 2</h3>--%>
+<%--                        <p>This is the content of Tab 2.</p>--%>
+<%--                    </div>--%>
                     <div>
                         <img src="${root}/resources/image/apple-inc.jpg" style="width:100%;"/>
                     </div>
@@ -63,6 +63,8 @@
             </div>
         </div>
     </div>
+
+
     <div id="myMesssge" class="modal fade" role="dialog" >
       <div class="modal-dialog">
         <!-- Modal content-->
