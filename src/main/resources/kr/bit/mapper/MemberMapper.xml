@@ -9,7 +9,9 @@
 
     <insert id="register" parameterType="kr.bit.entity.Member">
         insert into member_table(memberID, memberPw,memberName, memberAge, memberGender,
-        memberEmail ,memberProfile) values(#{memberID}, #{memberPw}, #{memberName}, #{memberAge}, #{memberGender}, #{memberEmail}, #{memberProfile})
+        memberEmail ,memberProfile)
+        values(#{memberID}, #{memberPw}, #{memberName}, #{memberAge}, #{memberGender},
+               #{memberEmail}, #{memberProfile})
     </insert>
 
     <select id="login" resultType="kr.bit.entity.Member" parameterType="kr.bit.entity.Member">

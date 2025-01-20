@@ -52,9 +52,25 @@ pageEncoding="UTF-8"%>
                     listHtml+="<td>내용</td>";
                     listHtml+="<td colspan='4'>";
                     listHtml+="<textarea id='ta"+obj.idx+"' readonly rows='7' class='form-control'>"+obj.content+"</textarea>";
+
+
+                    // 로그인 한 사람과 글쓴이가 같을때 수정 삭제 가능하게
+                    // 세션에 넣은 ${memberVo.memberID} 와 글쓴이 obj.memberID 같을때
+                    if("${memberVo.memberID}" == obj.memberID){
+
+
                     listHtml+="<br/>";
                     listHtml+="<span id='ub"+obj.idx+"'><button class='btn btn-success btn-sm' onclick='goUpdateForm("+obj.idx+")'>수정화면</button></span>&nbsp;";
                     listHtml+="<button class='btn btn-warning btn-sm' onclick='goDelete("+obj.idx+")'>삭제</button>";
+
+                    }
+                    else{
+                        listHtml+="<br/>";
+                        listHtml+="<span id='ub"+obj.idx+"'><button disabled class='btn btn-success btn-sm' onclick='goUpdateForm("+obj.idx+")'>수정화면</button></span>&nbsp;";
+                        listHtml+="<button  disabled class='btn btn-warning btn-sm' onclick='goDelete("+obj.idx+")'>삭제</button>";
+
+                    }
+
                     listHtml+="</td>";
                     listHtml+="</tr>";
 
