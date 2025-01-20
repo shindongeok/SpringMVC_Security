@@ -14,6 +14,12 @@ pageEncoding="UTF-8"%>
 	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 
 <script type="text/javascript">
+
+    let csrfName="${_csrf.headerName}";
+    let csrfToken="${_csrf.token}";
+
+
+
     $(document).ready(function(){
         loadList();
     });
@@ -113,14 +119,17 @@ pageEncoding="UTF-8"%>
              function goInsert(){
                 let fData=$("#frm").serialize();
                 $.ajax({
-                     url: "board/new",
-                     type: "post",
-                     data: fData,
-                     success: loadList,
-                     error: function(request,error){
+                    url: "board/new",
+                    type: "post",
+                    data: fData,        //xhr -> xmlHttpRequest
+                    beforeSend: function (xhr){ //csrf토큰을 http헤더에 추가해서 보낸다.
+                         xhr.setRequestHeader(csrfName,csrfToken)
+                    },
+                    success: loadList,
+                    error: function(request,error){
                          console.log(request.responseText);
                          console.log(error);
-                     }
+                    }
                 });
              }
 
@@ -152,6 +161,9 @@ pageEncoding="UTF-8"%>
                         type:"put",
                         data:{"idx":idx},
                         dataType:"json",
+                        beforeSend: function (xhr){ //csrf토큰을 http헤더에 추가해서 보낸다.
+                            xhr.setRequestHeader(csrfName,csrfToken)
+                        },
                         success:function(data){
                             $("#cnt"+idx).text(data.count);
                         },
@@ -168,6 +180,9 @@ pageEncoding="UTF-8"%>
                     url:"board/"+idx,
                     type: "delete",
                     data: {"idx":idx},//내가 삭제한 글번호
+                    beforeSend: function (xhr){ //csrf토큰을 http헤더에 추가해서 보낸다.
+                        xhr.setRequestHeader(csrfName,csrfToken)
+                    },
                     success: loadList,
                     error: function(request,error){
                          console.log(request.responseText);
@@ -193,15 +208,18 @@ pageEncoding="UTF-8"%>
                  let title=$("#nt"+idx).val();
                  let content=$("#ta"+idx).val();
                   $.ajax({
-                        url:"board/update",
-                        type:"put",
-                        contentType:'application/json;charset=utf-8',
-                        data:JSON.stringify({"idx":idx,"title":title,"content":content}),
-                        success:loadList,
-                        error: function (request,error){
+                      url:"board/update",
+                      type:"put",
+                      contentType:'application/json;charset=utf-8',
+                      data:JSON.stringify({"idx":idx,"title":title,"content":content}),
+                      beforeSend: function (xhr){ //csrf토큰을 http헤더에 추가해서 보낸다.
+                          xhr.setRequestHeader(csrfName,csrfToken)
+                      },
+                      success:loadList,
+                      error: function (request,error){
                                alert(request.responseText);
                                alert(error);
-                         }
+                      }
                   })
              }
 </script>

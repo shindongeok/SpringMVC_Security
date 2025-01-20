@@ -42,15 +42,15 @@
             <div class="panel-body">
                 <!-- Navigation Tabs -->
                 <ul class="nav nav-tabs">
-                    <li class="active"><a data-toggle="tab" href="#tab1">Tab 1</a></li>
+                    <li class="active"><a data-toggle="tab" href="#tab1">Spring</a></li>
                     <!--<li><a data-toggle="tab" href="#tab2">Tab 2</a></li>-->
                 </ul>
 
                 <!-- Tab Content -->
                 <div class="tab-content">
                     <div id="tab1" class="tab-pane fade in active">
-                        <h3>Tab 1</h3>
-                        <p>This is the content of Tab 1.</p>
+                        <h3>메인</h3>
+                        <p>메인입니다.</p>
                     </div>
                     <div id="tab2" class="tab-pane fade">
                         <h3>Tab 2</h3>

@@ -147,7 +147,11 @@ public class MemberController {
             rttr.addFlashAttribute("messageType", "성공");
             rttr.addFlashAttribute("message", "수정이 되었습니다.");
 
-            session.setAttribute("memberVo", member);
+            //회원정보 수정후 다시 회원정보 가져와서 셋팅
+            Member memberVo = memberMapper.getMember(member.getMemberID());
+            session.setAttribute("memberVo", memberVo);
+
+
 
             return "redirect:/";
         }

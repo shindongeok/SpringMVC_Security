@@ -42,7 +42,8 @@ pageEncoding="UTF-8"%>
                                 </td>
                            </tr>
                         </table>
-                    </form>
+                       <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                   </form>
               </div>
 
             <div id="myMesssge" class="modal fade" role="dialog" >

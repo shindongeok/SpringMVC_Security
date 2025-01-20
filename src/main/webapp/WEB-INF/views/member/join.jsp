@@ -68,28 +68,27 @@ pageEncoding="UTF-8"%>
   <div class="container">
       <jsp:include page="../always/header.jsp" />
       <div class="panel panel-default">
-          <div class="panel-body">
-               <form name="fr" action="${root}/memberRegister" method="post">
-                <input type="hidden" id="memberPw" name="memberPw" value=""/>
-                <table class="table table-borderd">
-                   <tr>
-                     <td placeholder="아이디 입력해라">아이디</td>
-                     <td><input type="text" class="form-control" id="memberID" name="memberID"/></td>
-                      <td><button type="button" class="btn btn-primary" onclick="doubleCheck()">중복확인</button></td>
-                   </tr>
+        <div class="panel-body">
+        <form name="fr" action="${root}/memberRegister" method="post">
+            <input type="hidden" id="memberPw" name="memberPw" value=""/>
+            <table class="table table-borderd">
+                <tr>
+                    <td placeholder="아이디 입력해라">아이디</td>
+                    <td><input type="text" class="form-control" id="memberID" name="memberID"/></td>
+                    <td><button type="button" class="btn btn-primary" onclick="doubleCheck()">중복확인</button></td>
+                </tr>
 
-                   <tr>
-                      <td placeholder="비밀번호 입력해라">비밀번호</td>
-                      <td><input type="password" class="form-control" name="memberPw1" id="memberPw1" onkeyup="pwCheck()" />
-                          <div id="passCheck" style="color: red"></div>
-                      </td>
-                   </tr>
+                <tr>
+                    <td placeholder="비밀번호 입력해라">비밀번호</td>
+                    <td><input type="password" class="form-control" name="memberPw1" id="memberPw1" onkeyup="pwCheck()" />
+                        <div id="passCheck" style="color: red"></div>
+                    </td>
+                </tr>
 
-                   <tr>
-                      <td placeholder="비밀번호 확인해라">비밀번호확인</td>
-                      <td><input type="password" class="form-control" name="memberPw2" id="memberPw2" onkeyup="pwCheck()"/></td>
-
-                   </tr>
+                <tr>
+                    <td placeholder="비밀번호 확인해라">비밀번호확인</td>
+                    <td><input type="password" class="form-control" name="memberPw2" id="memberPw2" onkeyup="pwCheck()"/></td>
+                </tr>
 
                 <tr>
                     <td placeholder="이름 입력해라">이름</td>
@@ -97,30 +96,44 @@ pageEncoding="UTF-8"%>
                 </tr>
 
                 <tr>
-                   <td placeholder="나이 입력해라">나이</td>
-                   <td><input type="number" class="form-control" id="memberAge" name="memberAge"/></td>
+                    <td placeholder="나이 입력해라">나이</td>
+                    <td><input type="number" class="form-control" id="memberAge" name="memberAge"/></td>
                 </tr>
 
-          <tr>
-               <td placeholder="성별 입력해라">성별</td>
-               <td><input type="radio" value="남자" name="memberGender"/>남자</td>
-               <td><input type="radio" value="여자" name="memberGender"/>여자</td>
-          </tr>
+                <tr>
+                    <td placeholder="성별 입력해라">성별</td>
+                    <td><input type="radio" value="남자" name="memberGender"/>남자</td>
+                    <td><input type="radio" value="여자" name="memberGender"/>여자</td>
+                </tr>
 
-            <tr>
-               <td placeholder="이메일 입력해라">이메일</td>
-               <td><input type="email" class="form-control" id="memberEmail" name="memberEmail"/></td>
-           </tr>
+                <tr>
+                    <td placeholder="이메일 입력해라">이메일</td>
+                    <td><input type="email" class="form-control" id="memberEmail" name="memberEmail"/></td>
+                </tr>
 
-         <tr>
-            <td></td>
-            <td></td>
-            <td  style="text-align:left;">
-                <input type="button" class="btn btn-primary" value="회원등록" onclick="goInsert()"/>
-            </td>
-         </tr>
-         </table>
-         </form>
+                <tr>
+                    <td placeholder="권한 입력">권한</td>
+                    <td colspan="2">
+                        <input type="checkbox" value="ROLE_USER" name="authList[0].auth"/>ROLE_USER &nbsp;
+                        <input type="checkbox" value="VIP_USER" name="authList[1].auth"/>ROLE_VIP &nbsp;
+                        <input type="checkbox" value="ROLE_ADMIN" name="authList[2].auth"/>ROLE_ADMIN &nbsp;
+                    </td>
+                </tr>
+
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td  style="text-align:left;">
+                        <input type="button" class="btn btn-primary" value="회원등록" onclick="goInsert()"/>
+                    </td>
+                </tr>
+
+
+            </table>
+
+            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+
+        </form>
      </div>
 
 

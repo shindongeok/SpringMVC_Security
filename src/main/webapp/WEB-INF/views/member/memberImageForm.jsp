@@ -25,7 +25,7 @@
     <jsp:include page="../always/header.jsp" />
     <div class="panel panel-default">
         <div class="panel-body">
-            <form action="${root}/memberImage" method="post" enctype="multipart/form-data">
+            <form action="${root}/memberImage?${_csrf.parameterName}=${_csrf.token}" method="post" enctype="multipart/form-data">
             <input type="hidden" id="memberID" name="memberID" value="${memberVo.memberID}" />
                 <table class="table table-borderd">
                     <tr>
@@ -45,6 +45,7 @@
                         </td>
                     </tr>
                 </table>
+
             </form>
         </div>
 
