@@ -111,6 +111,7 @@ pageEncoding="UTF-8"%>
                     <td><input type="email" class="form-control" id="memberEmail" name="memberEmail"/></td>
                 </tr>
 
+<%--                권한 선택--%>
                 <tr>
                     <td placeholder="권한 입력">권한</td>
                     <td colspan="2">

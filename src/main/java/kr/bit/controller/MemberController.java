@@ -3,8 +3,10 @@ package kr.bit.controller;
 import com.oreilly.servlet.MultipartRequest;
 import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
 import kr.bit.entity.Member;
+import kr.bit.entity.MemberAuth;
 import kr.bit.mapper.MemberMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,12 +18,17 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 @Controller
 public class MemberController {
 
     @Autowired
     private MemberMapper memberMapper;
+
+    //암호화를 위한 자동주입 설정
+    @Autowired
+    PasswordEncoder passwordEncoder;
 
     @RequestMapping("/memberJoin")
     public String memberJoin() {
@@ -47,7 +54,8 @@ public class MemberController {
                 member.getMemberName() == null || member.getMemberName().equals("") ||
                 member.getMemberAge() == 0 ||
                 member.getMemberGender() == null || member.getMemberGender().equals("") ||
-                member.getMemberEmail() == null || member.getMemberEmail().equals("")) {
+                member.getMemberEmail() == null || member.getMemberEmail().equals("") ||
+                member.getAuthList().size() == 0) {
 
             rttr.addFlashAttribute("messageType", "실패");
             rttr.addFlashAttribute("message", "모든 내용을 입력해야한다");
@@ -62,12 +70,34 @@ public class MemberController {
         }
 
         member.setMemberProfile("");
+
+        //패스워드 암호화 작업
+        String encPw=passwordEncoder.encode(member.getMemberPw());
+        member.setMemberPw(encPw);  //암호화된 비번으로 바꿔준다.
+
+
+
         int result = memberMapper.register(member);
         if (result == 1) {
+
+            //MemberAut테이블에 권한 저장
+            List<MemberAuth> list = member.getAuthList();
+            for (MemberAuth memberAuth : list){
+                if(memberAuth.getAuth() !=null){
+                    //권한 설정 셋메소드로 넣어줌 객체에
+                    MemberAuth memberAuthVo = new MemberAuth();
+                    memberAuthVo.setMemberID(member.getMemberID());
+                    memberAuthVo.setAuth(memberAuth.getAuth());
+                    memberMapper.authRegister(memberAuthVo); //권한 추가하는 메소드 디비에 memberMapper.
+                }
+            }
+
             rttr.addFlashAttribute("messageType", "성공");
             rttr.addFlashAttribute("message", "회원가입에 성공했다");
             //회원가입 되면 로그인처리할거임
-            session.setAttribute("memberVo", member);
+
+            Member memberVo = memberMapper.getMember(member.getMemberID());
+            session.setAttribute("memberVo", memberVo);
             return "redirect:/";
         } else {
             rttr.addFlashAttribute("messageType", "실패");
@@ -100,14 +130,21 @@ public class MemberController {
 
         Member memberVo = memberMapper.login(member);
 
-        if (memberVo != null) {  //로그인 성공했을때
-            rttr.addFlashAttribute("messageType", "성공");
-            rttr.addFlashAttribute("message", "로그인 되었다");
-            session.setAttribute("memberVo", memberVo);
-            return "redirect:/";
+        if (memberVo != null && passwordEncoder.matches(member.getMemberPw(), memberVo.getMemberPw())) {  // 로그인 성공했을 때
+            // 비밀번호 매칭 확인
+            if (passwordEncoder.matches(member.getMemberPw(), memberVo.getMemberPw())) {
+                rttr.addFlashAttribute("messageType", "성공");
+                rttr.addFlashAttribute("message", "로그인 되었다");
+                session.setAttribute("memberVo", memberVo);
+                return "redirect:/";
+            } else {
+                rttr.addFlashAttribute("messageType", "실패");
+                rttr.addFlashAttribute("message", "비밀번호가 일치하지 않습니다.");
+                return "redirect:/memberLoginForm";
+            }
         } else {
             rttr.addFlashAttribute("messageType", "실패");
-            rttr.addFlashAttribute("message", "다시 로그인해라");
+            rttr.addFlashAttribute("message", "존재하지 않는 회원입니다.");
             return "redirect:/memberLoginForm";
         }
     }
