@@ -18,7 +18,7 @@
     function logout(){
 
         $.ajax({
-
+            // 스프링 시큐리티에서 로그아웃,로그인을 지원하기 때문에 url매핑을 컨트롤러에서 안해도 자동으로 가능하다.
             url: "${root}/logout",
             type: "post",
             beforeSend: function (xhr){ //csrf토큰을 http헤더에 추가해서 보낸다.
@@ -35,7 +35,7 @@
         });
     }
 </script>
-<meta charset="UTF-8">
+<%--<meta charset="UTF-8">--%>
 <nav class="navbar navbar-default">
     <div class="container-fluid">
         <div class="navbar-header">
@@ -68,11 +68,11 @@
                         <a class="dropdown-toggle" data-toggle="dropdown" href="#">
                             <c:if test="${!empty memVo}">
                                     <%--memberVo.memberProfile값이     공백이면--%>
-                                    <c:if test="${memberVo.memberProfile eq ''}">
+                                    <c:if test="${memVo.member.memberProfile eq ''}">
                                             <img src="${root}/resources/image/cat.jpg" style="width: 30px; height: 30px;"/>
                                     </c:if>
                                     <%----%>
-                                    <c:if test="${memberVo.memberProfile ne ''}">
+                                    <c:if test="${memVo.member.memberProfile ne ''}">
                                         <img src="${root}/resources/upload/${memVo.member.memberProfile}" style="width: 30px; height: 30px;"/>
                                     </c:if>
 

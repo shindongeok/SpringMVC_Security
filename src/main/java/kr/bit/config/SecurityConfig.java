@@ -49,16 +49,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/")   //메인페이지 누구나 확인가능 설정
                 .permitAll()    // /(기본경로)는 다 접근 가능
-                    .and()
+                .and()
                     .formLogin()    //기본 로그인 폼 활성화(스프링에서 제공해주는 폼이 기본으로 나온다)
                     .loginPage("/memberLoginForm")
                     .loginProcessingUrl("/memberLogin") //로그인처리를 어디서 할것이냐. 로그인 처리 페이지!
+                                        // 시큐리티에서 가로채가기때문에 컨트롤러에 없어도 상관없다.(이름만있다)
+                                        //로그인 url
                     .permitAll()    //로그인 페이지는 누구나 접근 가능하다.
-                        .and()
+                    .and()
                         .logout()
                         .invalidateHttpSession(true)    //로그아웃 후 세션 제거
                         .logoutSuccessUrl("/")  //로그아웃 후 /로 리다이렉트
-                        .and()
+                        .and()  //login?error
                             .exceptionHandling().accessDeniedPage("/denied");   //오류페이지로 이동.
                             // 필요하다면 추가 가능 !!
 
