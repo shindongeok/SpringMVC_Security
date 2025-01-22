@@ -7,6 +7,7 @@ import javax.servlet.Filter;
 
 public class WebConfig extends AbstractAnnotationConfigDispatcherServletInitializer {
 
+    //DispatcherServlet이 애플리케이션 컨텍스트를 초기화할 때 사용
     //등록 RootConfig,SecurityConfig
     @Override
     protected Class<?>[] getRootConfigClasses() {
@@ -14,6 +15,7 @@ public class WebConfig extends AbstractAnnotationConfigDispatcherServletInitiali
         return new Class[] { RootConfig.class , SecurityConfig.class};
     }
 
+    //DispatcherServlet이 요청을 처리할 때 웹 애플리케이션의 서블릿 설정을 로드하는 역할
     @Override
     protected Class<?>[] getServletConfigClasses() {
         // TODO Auto-generated method stub
@@ -26,6 +28,7 @@ public class WebConfig extends AbstractAnnotationConfigDispatcherServletInitiali
         return new String[] { "/" };
     }
 
+    //DispatcherServlet이 어떤 URL 요청을 처리할지 지정
     @Override
     protected Filter[] getServletFilters() {
         CharacterEncodingFilter encodingFilter = new CharacterEncodingFilter();

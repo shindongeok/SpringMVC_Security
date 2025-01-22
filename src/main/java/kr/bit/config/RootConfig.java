@@ -22,6 +22,8 @@ public class RootConfig {
     @Autowired
     private Environment env;
 
+
+    //스프링에서 데이터베이스 연결을 위한 DataSource를 빈으로 등록
     @Bean
     public DataSource dataSource(){
         HikariConfig hikariConfig = new HikariConfig();
@@ -42,6 +44,8 @@ public class RootConfig {
 //
 //    }
 
+
+    //쿼리 실행과 같은 DB 작업을 처리하는 객체
     @Bean
     public SqlSessionFactory sessionFactory() throws Exception{
         SqlSessionFactoryBean sessionFactoryBean = new SqlSessionFactoryBean();

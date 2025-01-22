@@ -75,8 +75,6 @@
                                     <c:if test="${memVo.member.memberProfile ne ''}">
                                         <img src="${root}/resources/upload/${memVo.member.memberProfile}" style="width: 30px; height: 30px;"/>
                                     </c:if>
-
-
                             </c:if>
 
                                 <security:authorize access="hasRole('ROLE_USER')">
