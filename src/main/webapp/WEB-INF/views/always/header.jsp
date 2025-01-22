@@ -11,6 +11,29 @@
     console.log("${memVo}");
     console.log("${memVo.member.memberName}");
 
+    // ajax로 넘길때
+    let csrfName="${_csrf.headerName}";
+    let csrfToken="${_csrf.token}";
+    // 시큐리티에서 로그아웃은 get방식이 안됨
+    function logout(){
+
+        $.ajax({
+
+            url: "${root}/logout",
+            type: "post",
+            beforeSend: function (xhr){ //csrf토큰을 http헤더에 추가해서 보낸다.
+                xhr.setRequestHeader(csrfName,csrfToken)
+            },
+            success: function (){
+                location.href="${root}/";
+            },
+            error: function(request,error){
+                console.log(request.responseText);
+                console.log(error);
+            }
+
+        });
+    }
 </script>
 <meta charset="UTF-8">
 <nav class="navbar navbar-default">
@@ -46,11 +69,11 @@
                             <c:if test="${!empty memVo}">
                                     <%--memberVo.memberProfile값이     공백이면--%>
                                     <c:if test="${memberVo.memberProfile eq ''}">
-                                            <img src="${root}/resources/image/cat.jpg" style="width: 50px; height: 50px;"/>
+                                            <img src="${root}/resources/image/cat.jpg" style="width: 30px; height: 30px;"/>
                                     </c:if>
                                     <%----%>
                                     <c:if test="${memberVo.memberProfile ne ''}">
-                                        <img src="${root}/resources/upload/${memVo.member.memberProfile}" style="width: 50px; height: 50px;"/>
+                                        <img src="${root}/resources/upload/${memVo.member.memberProfile}" style="width: 30px; height: 30px;"/>
                                     </c:if>
 
 
@@ -75,7 +98,7 @@
                             <c:if test="${!empty memVo}">
                                 <li><a href="${root}/memberUpdateForm"><span class="glyphicon glyphicon-user"></span>정보수정</a></li>
                                 <li><a href="${root}/memberImageForm"><span class="glyphicon glyphicon-paperclip"></span>사진등록</a></li>
-                                <li><a href="${root}/memberLogout"><span class="glyphicon glyphicon-log-out"></span>로그아웃</a></li>
+                                <li><a href="javascript:logout()"><span class="glyphicon glyphicon-log-out"></span>로그아웃</a></li>
                             </c:if>
                         </ul>
                     </li>

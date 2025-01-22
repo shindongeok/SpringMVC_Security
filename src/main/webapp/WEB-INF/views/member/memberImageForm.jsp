@@ -54,21 +54,19 @@
             <form action="${root}/memberImage?${_csrf.parameterName}=${_csrf.token}" method="post" enctype="multipart/form-data">
             <input type="hidden" id="memberID" name="memberID" value="${memberVo.memberID}" />
                 <table class="table table-borderd">
-                    <tr>
-                        <td placeholder="아이디 입력해라">아이디</td>
-                        <td>${memberVo.memberID}</td>
-                    </tr>
+
 
                     <tr>
-                        <td>사진업로드</td>
-                        <td colspan="2">
-                            사진 업로드해라<input type="file" name="memberProfile"  id="memberProfile">
-                        </td>
-                        <td>
+                        <td>사진 미리보기
                             <div class="preview" id="previewArea">
                                 <img id="imagePreview" src="" alt="이미지 미리보기" style="max-width: 200px; max-height: 200px; display: none;">
                             </div>
                         </td>
+                        <td colspan="2">
+                            파일 명
+                            <input type="file" name="memberProfile"  id="memberProfile">
+                        </td>
+
 
                     </tr>
                     <tr>

@@ -100,29 +100,28 @@
                         <td placeholder="권한 입력해라">권한</td>
                         <td colspan="2">
                             <input type="checkbox" name="authList[0].auth" value="ROLE_USER"
-                            <c:forEach var="authVo" items="${memberVo.authList}">
-                            <c:if test="${authVo.auth eq 'ROLE_USER'}">
-                                   checked
-                            </c:if>
-                            </c:forEach> </>ROLE_USER &nbsp;
-
+                                    <c:forEach var="authVo" items="${memberVo.authList}">
+                                        <c:if test="${authVo.auth eq 'ROLE_USER'}">
+                                            checked
+                                        </c:if>
+                                    </c:forEach> /> ROLE_USER &nbsp;
 
                             <input type="checkbox" name="authList[1].auth" value="ROLE_VIP"
-                            <c:forEach var="authVo" items="${memberVo.authList}">
-                            <c:if test="${authVo.auth eq 'ROLE_VIP'}">
-                                   checked
-                            </c:if>
-                            </c:forEach> </>ROLE_VIP &nbsp;
-
+                                    <c:forEach var="authVo" items="${memberVo.authList}">
+                                        <c:if test="${authVo.auth eq 'ROLE_VIP'}">
+                                            checked
+                                        </c:if>
+                                    </c:forEach> /> ROLE_VIP &nbsp;
 
                             <input type="checkbox" name="authList[2].auth" value="ROLE_ADMIN"
-                            <c:forEach var="authVo" items="${memberVo.authList}">
-                            <c:if test="${authVo.auth eq 'ROLE_ADMIN'}">
-                                   checked
-                            </c:if>
-                            </c:forEach></> ROLE_ADMIN &nbsp;
+                                    <c:forEach var="authVo" items="${memberVo.authList}">
+                                        <c:if test="${authVo.auth eq 'ROLE_ADMIN'}">
+                                            checked
+                                        </c:if>
+                                    </c:forEach> /> ROLE_ADMIN &nbsp;
                         </td>
                     </tr>
+
 
 
                     <tr>
