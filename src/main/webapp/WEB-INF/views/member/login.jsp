@@ -13,9 +13,16 @@ pageEncoding="UTF-8"%>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 <script>
     $(document).ready(function(){
-          if(${!empty messageType}){
-              $("#myMesssge").modal("show");
-          }
+         //시큐리티는 기본적으로 로그인 로그아웃 제공하는데
+        // 로그인 에러가 나면 발생시키겠다.
+        if(${param.error!=null}){
+            $(".modal-body").text("아이디랑 비밀번호 확인해주세요");
+            $(".close").text("실패");
+            $("#myMesssge").modal("show");
+        }
+        if(${!empty messageType}){
+            $("#myMesssge").modal("show");
+        }
       });
 </script>
 
@@ -29,12 +36,12 @@ pageEncoding="UTF-8"%>
                         <table class="table table-borderd">
                            <tr>
                              <td placeholder="아이디 입력해라">아이디</td>
-                             <td><input type="text" class="form-control" id="memberID" name="memberID"/></td>
+                             <td><input type="text" class="form-control" id="memberID" name="username"/></td>
                            </tr>
 
                            <tr>
                               <td placeholder="비밀번호 입력해라">비밀번호</td>
-                              <td><input type="password" class="form-control" name="memberPw" id="memberPw" /></td>
+                              <td><input type="password" class="form-control" name="password" id="memberPw" /></td>
                            </tr>
                             <tr>
                                 <td colspna="2">

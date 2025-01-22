@@ -83,17 +83,9 @@ pageEncoding="UTF-8"%>
                 } );
 
 
-                if(${!empty memberVo}) {
+                if (${!empty memberVo}) {
                     listHtml += "<tr>";
-                    listHtml += "<td>";
-                    listHtml += "</td>";
-                    listHtml += "<td>";
-                    listHtml += "</td>";
-                    listHtml += "<td>";
-                    listHtml += "</td>";
-                    listHtml += "<td>";
-                    listHtml += "</td>";
-                    listHtml += "<td colspan='5' >";
+                    listHtml += "<td colspan='5' style='text-align:right;'>";  // 오른쪽 정렬을 위한 스타일 추가
                     listHtml += "<button class='btn btn-primary btn-sm' onclick='goForm()'>글쓰기</button>";
                     listHtml += "</td>";
                     listHtml += "</tr>";

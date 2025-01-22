@@ -53,7 +53,7 @@
 <div class="container">
     <jsp:include page="../always/header.jsp" />
     <div class="panel panel-default">
-        <div class="panel-body">
+        <colspan class="panel-body">
             <form name="fr" action="${root}/memberUpdate" method="post">
                 <input type="hidden" id="memberID" name="memberID" value="${memberVo.memberID}" />
                 <input type="hidden" id="memberPw" name="memberPw" />
@@ -95,6 +95,35 @@
                         <td placeholder="이메일 입력해라">이메일</td>
                         <td><input type="email" class="form-control" id="memberEmail" name="memberEmail" value="${memberVo.memberEmail}"/></td>
                     </tr>
+
+                    <tr>
+                        <td placeholder="권한 입력해라">권한</td>
+                        <td colspan="2">
+                            <input type="checkbox" name="authList[0].auth" value="ROLE_USER"
+                            <c:forEach var="authVo" items="${memberVo.authList}">
+                            <c:if test="${authVo.auth eq 'ROLE_USER'}">
+                                   checked
+                            </c:if>
+                            </c:forEach> </>ROLE_USER &nbsp;
+
+
+                            <input type="checkbox" name="authList[1].auth" value="ROLE_VIP"
+                            <c:forEach var="authVo" items="${memberVo.authList}">
+                            <c:if test="${authVo.auth eq 'ROLE_VIP'}">
+                                   checked
+                            </c:if>
+                            </c:forEach> </>ROLE_VIP &nbsp;
+
+
+                            <input type="checkbox" name="authList[2].auth" value="ROLE_ADMIN"
+                            <c:forEach var="authVo" items="${memberVo.authList}">
+                            <c:if test="${authVo.auth eq 'ROLE_ADMIN'}">
+                                   checked
+                            </c:if>
+                            </c:forEach></> ROLE_ADMIN &nbsp;
+                        </td>
+                    </tr>
+
 
                     <tr>
                         <td></td>

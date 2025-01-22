@@ -34,11 +34,19 @@ public class RootConfig {
         return hikariDataSource;
     }
 
+//    @Bean
+//    public SqlSessionFactory sessionFactory() throws Exception{
+//        SqlSessionFactoryBean sessionFactoryBean = new SqlSessionFactoryBean();
+//        sessionFactoryBean.setDataSource(dataSource());
+//        return (SqlSessionFactory)sessionFactoryBean.getObject();
+//
+//    }
+
     @Bean
     public SqlSessionFactory sessionFactory() throws Exception{
         SqlSessionFactoryBean sessionFactoryBean = new SqlSessionFactoryBean();
         sessionFactoryBean.setDataSource(dataSource());
-        return (SqlSessionFactory)sessionFactoryBean.getObject();
+        return sessionFactoryBean.getObject();
 
     }
 }

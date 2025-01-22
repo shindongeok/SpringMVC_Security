@@ -8,10 +8,7 @@ import kr.bit.mapper.MemberMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
@@ -108,52 +105,53 @@ public class MemberController {
         }
     }
 
-    @RequestMapping("/memberLogout")
-    public String memberLogout(HttpSession session) {
-        session.invalidate();
-        return "redirect:/";
-    }
+//    @RequestMapping("/memberLogout")
+//    public String memberLogout(HttpSession session) {
+//        session.invalidate();
+//        return "redirect:/";
+//    }
 
     @RequestMapping("/memberLoginForm")
     public String memberLoginForm() {
         return "member/login";
     }
 
-    @RequestMapping("/memberLogin")
-    public String memberLogin(Member member, RedirectAttributes rttr, HttpSession session) {
-        if (member.getMemberID() == null || member.getMemberID().equals("") ||
-                member.getMemberPw() == null || member.getMemberPw().equals("")) {
-
-            rttr.addFlashAttribute("messageType", "실패");
-            rttr.addFlashAttribute("message", "모든 내용을 입력해야한다");
-
-            return "redirect:/memberLoginForm";
-        }
-
-        Member memberVo = memberMapper.login(member);
-
-
-        //passwordEncoder.matches(member.getMemberPw(), memberVo.getMemberPw()) 함수로 해쉬화? 해주는 작업이 가능한다
-        // 클라이언트가 입력한 값과 디비에 저장된 값 (비번) 을 해쉬화로해서 비교함.
-        if (memberVo != null && passwordEncoder.matches(member.getMemberPw(), memberVo.getMemberPw())) {  // 로그인 성공했을 때
-            // 비밀번호 매칭 확인
-            if (passwordEncoder.matches(member.getMemberPw(), memberVo.getMemberPw())) {
-                rttr.addFlashAttribute("messageType", "성공");
-                rttr.addFlashAttribute("message", "로그인 되었다");
-                session.setAttribute("memberVo", memberVo);
-                System.out.println(memberVo);
-                return "redirect:/";
-            } else {
-                rttr.addFlashAttribute("messageType", "실패");
-                rttr.addFlashAttribute("message", "비밀번호가 일치하지 않습니다.");
-                return "redirect:/memberLoginForm";
-            }
-        } else {
-            rttr.addFlashAttribute("messageType", "실패");
-            rttr.addFlashAttribute("message", "존재하지 않는 회원입니다.");
-            return "redirect:/memberLoginForm";
-        }
-    }
+//    @RequestMapping("/memberLogin")
+//    public String memberLogin(Member member, RedirectAttributes rttr, HttpSession session) {
+//        if (member.getMemberID() == null || member.getMemberID().equals("") ||
+//                member.getMemberPw() == null || member.getMemberPw().equals("")) {
+//
+//            rttr.addFlashAttribute("messageType", "실패");
+//            rttr.addFlashAttribute("message", "모든 내용을 입력해야한다");
+//
+//            return "redirect:/memberLoginForm";
+//        }
+//
+//        Member memberVo = memberMapper.login(member);
+//
+//
+//        //passwordEncoder.matches(member.getMemberPw(), memberVo.getMemberPw()) 함수로 해쉬화? 해주는 작업이 가능한다
+//        // 클라이언트가 입력한 값과 디비에 저장된 값 (비번) 을 해쉬화로해서 비교함.
+//        // matches -> 반환 boolean 이다.
+//        if (memberVo != null && passwordEncoder.matches(member.getMemberPw(), memberVo.getMemberPw())) {  // 로그인 성공했을 때
+//            // 비밀번호 매칭 확인
+//            if (passwordEncoder.matches(member.getMemberPw(), memberVo.getMemberPw())) {
+//                rttr.addFlashAttribute("messageType", "성공");
+//                rttr.addFlashAttribute("message", "로그인 성!공!");
+//                session.setAttribute("memberVo", memberVo);
+//                System.out.println(memberVo);
+//                return "redirect:/";
+//            } else {
+//                rttr.addFlashAttribute("messageType", "실패");
+//                rttr.addFlashAttribute("message", "비밀번호가 일치하지 않습니다.");
+//                return "redirect:/memberLoginForm";
+//            }
+//        } else {
+//            rttr.addFlashAttribute("messageType", "실패");
+//            rttr.addFlashAttribute("message", "존재하지 않는 회원입니다.");
+//            return "redirect:/memberLoginForm";
+//        }
+//    }
 
     @RequestMapping("/memberUpdateForm")
     public String memberUpdateForm(){
@@ -170,7 +168,8 @@ public class MemberController {
                 member.getMemberName() == null || member.getMemberName().equals("") ||
                 member.getMemberAge() == 0 ||
                 member.getMemberGender() == null || member.getMemberGender().equals("") ||
-                member.getMemberEmail() == null || member.getMemberEmail().equals("")) {
+                member.getMemberEmail() == null || member.getMemberEmail().equals("") ||
+                member.getAuthList().size() ==0) {
 
             rttr.addFlashAttribute("messageType", "실패");
             rttr.addFlashAttribute("message", "모든 내용을 입력해야한다");
@@ -184,9 +183,28 @@ public class MemberController {
             return "redirect:/memberUpdateForm";
         }
 
+        //encoder 하면 복호화는 못한다.
+        String encPw=passwordEncoder.encode(member.getMemberPw());  //내가 입력한 비번을  bcrpt 해싱해서 암호화
+        member.setMemberPw(encPw);
+        System.out.println(encPw);
+
         //회원수정
         int result=memberMapper.update(member);
         if(result == 1){
+
+            //예전에 줬던 권한을 삭제시켜야함
+             memberMapper.authDalate(member.getMemberID());
+
+            List<MemberAuth> list= member.getAuthList();
+            for(MemberAuth memberAuth : list){
+                if(memberAuth.getAuth()!=null){
+                    MemberAuth memberAuthVo=new MemberAuth();
+                    memberAuthVo.setMemberID(member.getMemberID());
+                    memberAuthVo.setAuth(memberAuth.getAuth());
+                    memberMapper.authRegister(memberAuthVo);
+                }
+            }
+
             rttr.addFlashAttribute("messageType", "성공");
             rttr.addFlashAttribute("message", "수정이 되었습니다.");
 
@@ -271,7 +289,10 @@ public class MemberController {
 
 
 
-
+    @GetMapping("/denied")
+    public String denied(){
+        return "denied";
+    }
 
 
 }

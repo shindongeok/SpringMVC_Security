@@ -1,7 +1,17 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@taglib prefix="security" uri="http://www.springframework.org/security/tags"%>
 <c:set var="root" value="${pageContext.request.contextPath}"/>
+<%--실행중인 웹앱의 contextPath의 값--%>
+<c:set var="memVo" value="${SPRING_SECURITY_CONTEXT.authentication.principal}"/>
+<%-- 스프링시큐리티에서 현재 인증된 객체를 가져오는 표현식(UserDetails) --%>
+<c:set var="auth" value="${SPRING_SECURITY_CONTEXT.authentication.authorities}"/>
+<script>
+    console.log("${memVo}");
+    console.log("${memVo.member.memberName}");
+
+</script>
 <meta charset="UTF-8">
 <nav class="navbar navbar-default">
     <div class="container-fluid">
@@ -15,7 +25,9 @@
             <ul class="nav navbar-nav">
                 <li><a href="boardMain">게시판</a></li>
             </ul>
-            <c:if test="${empty memberVo}">
+
+            <!-- 익명일때 -->
+            <security:authorize access="isAnonymous()">
                 <ul class="nav navbar-nav navbar-right">
                     <li class="dropdown">
                         <a class="dropdown-toggle" data-toggle="dropdown" href="#">접속<span class="caret"></span></a>
@@ -25,33 +37,42 @@
                         </ul>
                     </li>
                 </ul>
-            </c:if>
+            </security:authorize>
 
-            <c:if test="${!empty memberVo}">
+            <security:authorize access="isAuthenticated()">
                 <ul class="nav navbar-nav navbar-right">
                     <li class="dropdown">
                         <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                            <c:if test="${!empty memberVo}">
-                                <%--memberVo.memberProfile값이     공백이면--%>
-                                <c:if test="${memberVo.memberProfile eq ''}">
-                                    <img src="${root}/resources/image/cat.jpg" style="width: 50px; height: 50px;"/>
-                                </c:if>
-                                <%----%>
-                                <c:if test="${memberVo.memberProfile ne ''}">
-                                    <img src="${root}/resources/upload/${memberVo.memberProfile}" style="width: 50px; height: 50px;"/>
-                                </c:if>
-                                <c:forEach var="authVo" items="${memberVo.authList}">
-                                    <c:if test="${authVo.auth eq 'ROLE_USER'}">일반회원</c:if>
-                                    <c:if test="${authVo.auth eq 'ROLE_VIP'}">VIP</c:if>
-                                    <c:if test="${authVo.auth eq 'ROLE_ADMIN'}">관리자</c:if>
-                                </c:forEach>
-                                ${memberVo.memberName} 님 환영합니다.
+                            <c:if test="${!empty memVo}">
+                                    <%--memberVo.memberProfile값이     공백이면--%>
+                                    <c:if test="${memberVo.memberProfile eq ''}">
+                                            <img src="${root}/resources/image/cat.jpg" style="width: 50px; height: 50px;"/>
+                                    </c:if>
+                                    <%----%>
+                                    <c:if test="${memberVo.memberProfile ne ''}">
+                                        <img src="${root}/resources/upload/${memVo.member.memberProfile}" style="width: 50px; height: 50px;"/>
+                                    </c:if>
+
+
                             </c:if>
 
+                                <security:authorize access="hasRole('ROLE_USER')">
+                                    일반회원,
+                                </security:authorize>
+
+                                <security:authorize access="hasRole('ROLE_VIP')">
+                                    VIP,
+                                </security:authorize>
+
+                                <security:authorize access="hasRole('ROLE_ADMIN')">
+                                    관리자,
+                                </security:authorize>
+                                    ${memVo.member.memberName} 님 환영합니다.
                             <span class="caret"></span>
                         </a>
+
                         <ul class="dropdown-menu">
-                            <c:if test="${!empty memberVo}">
+                            <c:if test="${!empty memVo}">
                                 <li><a href="${root}/memberUpdateForm"><span class="glyphicon glyphicon-user"></span>정보수정</a></li>
                                 <li><a href="${root}/memberImageForm"><span class="glyphicon glyphicon-paperclip"></span>사진등록</a></li>
                                 <li><a href="${root}/memberLogout"><span class="glyphicon glyphicon-log-out"></span>로그아웃</a></li>
@@ -59,7 +80,7 @@
                         </ul>
                     </li>
                 </ul>
-            </c:if>
+            </security:authorize>
         </div>
     </div>
 </nav>

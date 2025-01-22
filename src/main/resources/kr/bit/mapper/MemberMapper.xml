@@ -23,7 +23,7 @@
     </resultMap>
 
 
-
+<!--중복확인-->
     <select id="memberDoubleCheck" resultType="kr.bit.entity.Member">
         select *from mem_table where memberID=#{memberID}
     </select>
@@ -39,12 +39,28 @@
                #{memberEmail}, #{memberProfile})
     </insert>
 
-    <select id="login" resultType="kr.bit.entity.Member" parameterType="kr.bit.entity.Member">
-        select * from mem_table where memberID=#{memberID}
+<!--    <select id="login" resultType="kr.bit.entity.Member" parameterType="kr.bit.entity.Member">-->
+<!--        select * from mem_table where memberID=#{memberID}-->
+<!--    </select>-->
+<!--    권한등급을 보여주기 위해 조인-->
+<!--    <select id="login" resultMap="memberMap" parameterType="kr.bit.entity.Member">-->
+<!--        SELECT m.*, ma.auth-->
+<!--        FROM mem_table m-->
+<!--        LEFT JOIN member_auth ma ON m.memberID = ma.memberID-->
+<!--        WHERE m.memberID = #{memberID}-->
+<!--    </select>-->
+
+    <select id="login" resultMap="memberMap">
+        SELECT *
+        FROM mem_table mem
+        LEFT outer join  member_auth auth
+        on mem.memberID = auth.memberID
+        WHERE mem.memberID = #{memberID}
     </select>
 
+
     <update id="update" parameterType="kr.bit.entity.Member">
-        update member_table set memberPw = #{memberPw}, memberName = #{memberName},
+        update mem_table set memberPw = #{memberPw}, memberName = #{memberName},
         memberAge = #{memberAge},memberGender = #{memberGender}, memberEmail=#{memberEmail}
         where memberID = #{memberID}
     </update>
@@ -59,7 +75,7 @@
     </select>
 
     <update id="memberProfile" parameterType="kr.bit.entity.Member">
-        update member_table set memberProfile = #{memberProfile} where memberID = #{memberID}
+        update mem_table set memberProfile = #{memberProfile} where memberID = #{memberID}
     </update>
 
 <!--    권한테이블 추가-->
@@ -67,9 +83,9 @@
         INSERT INTO member_auth(memberID, auth) values(#{memberID}, #{auth})
     </insert>
 
-
-
-
-
+<!-- 회원수정시 권한줬던거 삭제하기위한 쿼리-->
+    <delete id="authDalate">
+        delete from member_Auth where memberID = #{memberID}
+    </delete>
 </mapper>
 

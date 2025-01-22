@@ -18,6 +18,32 @@
                 $("#myMesssge").modal("show");
             }
         });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            let fileInput = document.getElementById('memberProfile');
+            let previewArea = document.getElementById('previewArea');
+            let imagePreview = document.getElementById('imagePreview'); // 이미지 미리보기 요소
+
+            fileInput.addEventListener('change', (event) => {
+                let file = event.target.files[0]; // 사용자가 선택한 파일
+                if (!file) {
+                    previewArea.textContent = "파일이 선택되지 않았습니다.";
+                    imagePreview.style.display = 'none'; // 이미지 미리보기 숨기기
+                    return;
+                }
+
+                let reader = new FileReader();
+                reader.onload = (e) => {
+                    imagePreview.src = e.target.result; // 파일을 이미지로 표시
+                    imagePreview.style.display = 'block'; // 이미지를 표시
+                };
+                reader.onerror = () => {
+                    previewArea.textContent = "파일을 읽는 중 오류가 발생했습니다.";
+                    imagePreview.style.display = 'none'; // 오류 발생 시 이미지를 숨기기
+                };
+                reader.readAsDataURL(file); // 이미지 파일 읽기
+            });
+        });
     </script>
 </head>
 <body>
@@ -36,8 +62,14 @@
                     <tr>
                         <td>사진업로드</td>
                         <td colspan="2">
-                            사진 업로드해라<input type="file" name="memberProfile">
+                            사진 업로드해라<input type="file" name="memberProfile"  id="memberProfile">
                         </td>
+                        <td>
+                            <div class="preview" id="previewArea">
+                                <img id="imagePreview" src="" alt="이미지 미리보기" style="max-width: 200px; max-height: 200px; display: none;">
+                            </div>
+                        </td>
+
                     </tr>
                     <tr>
                         <td colspna="2">
